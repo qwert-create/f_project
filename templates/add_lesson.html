@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додати урок</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Додати урок до курсу</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="lesson_name">Назва уроку</label>
+                <input type="text" class="form-control" id="lesson_name" name="lesson_name" required>
+            </div>
+            <div class="form-group">
+                <label for="lesson_desc">Опис уроку</label>
+                <textarea class="form-control" id="lesson_desc" name="lesson_desc" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="lesson_link">Посилання на відео</label>
+                <input type="url" class="form-control" id="lesson_link" name="lesson_link" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Додати урок</button>
+        </form>
+    </div>
+</body>
+</html>

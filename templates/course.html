@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Уроки курсу: </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="http://127.0.0.1:5000/">Домашня сторінка</a>
+      </nav>
+    <hr>
+    <ul>
+        {% for i in result %}
+          <a type="button" href="http://127.0.0.1:5000/course/{{ course_id }}/lesson/{{ i[1] }}" class="btn btn-primary btn-lg btn-block">{{i[0]}}</a>
+        {% endfor %}      
+    </ul>
+  </hr>
+</body>
+</html>

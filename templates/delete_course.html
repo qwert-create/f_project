@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Видалити курс</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 50px;
+        }
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Видаляй курс</h1>
+    <form method="post" action="{{ url_for('delete_course') }}">
+        <label for="title">Введи назву курсу:</label>
+        <input type="text" id="title" name="title" required>
+        <button type="submit">Видалити</button>
+    </form>
+</body>
+</html>

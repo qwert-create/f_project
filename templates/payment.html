@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Оплата</h1>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                <div class="alert">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form method="POST" enctype="multipart/form-data">
+            <label for="cardnumber">Card Number</label>
+            <input type="text" class="form-control" name="cardnumber" id="cardnumber" required>
+
+            <label for="expmonth">Month</label>
+            <input type="text" class="form-control" name="expmonth" id="expmonth" required>
+
+            <label for="expyear">Year</label>
+            <input type="text" class="form-control" name="expyear" id="expyear" required>
+
+            <label for="cvv">CVV</label>
+            <input type="text" class="form-control" name="cvv" id="cvv" required>
+            
+            <button class="btn btn-primary" type="submit">Оплатити💸</button>
+        </form>
+    </div>
+</body>
+</html>

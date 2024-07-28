@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додати курс</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Додати курс</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="title">Назва курсу:</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Ціна курсу:</label>
+                <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Опис курсу:</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="duration">Тривалість курсу (у годинах):</label>
+                <input type="number" class="form-control" id="duration" name="duration" required>
+            </div>
+            <div class="form-group">
+                <label for="mentor">Викладач курсу:</label>
+                <input type="text" class="form-control" id="mentor" name="mentor" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Додати курс</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курси</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .course-card {
+            margin-bottom: 20px;
+        }
+        .register-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .jumbotron {
+            background-image: url('https://media.istockphoto.com/id/1487445129/uk/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%BD%D1%96-%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%BD%D1%8F/%D0%BC%D0%BE%D0%B2%D0%B0-%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D1%83%D0%B2%D0%B0%D0%BD%D0%BD%D1%8F-python.jpg?s=612x612&w=0&k=20&c=dnBaRqvK5pgKa1z3yK3QtDceBobaiMB0ymP2d9xrYFY=');
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 100px;
+            margin-bottom: 100px;
+            position: relative;
+        }
+        .jumbotron-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1); 
+        }
+        .register-btn + .register-btn {
+            top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1 class="display-4">Вітаємо на курсах мов програмування</h1>
+        <p class="lead">Тут ви знайдете найкращі курси з програмування, які допоможуть вам розвинути свої навички!</p>
+    </div>
+
+    {% if 'username' in session %}
+        <span>Привіт, {{ session['username'] }}!</span>
+        <a href="{{ url_for('logout') }}" class="btn btn-primary register-btn">Вийти</a>
+        {% if user.is_admin %}
+        <div class="admin-buttons">
+            <a href="{{ url_for('admin_actions') }}" class="btn btn-primary">Адмін панель</a>
+        </div>
+    {% endif %}
+    {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-primary register-btn">Увійти</a>
+        <a href="{{ url_for('register') }}" class="btn btn-primary register-btn">Зареєструватись</a>
+    {% endif %}
+    
+    <h2>Доступні курси:</h2>
+    <div class="row">
+        {% for course, avg_rating, popularity in courses_with_ratings %}
+            <div class="col-md-4">
+                <div class="card course-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Тривалість: {{ course.duration }} годин</li>
+                            <li class="list-group-item">Викладач: {{ course.mentor }}</li>
+                            <li class="list-group-item">Популярність: {{ popularity }}</li>
+                            <li class="list-group-item">Вартість: {{ course.price }} Гривень</li>
+                            <li class="list-group-item">Опис курсу: {{ course.description }}</li>
+                        </ul>
+                        <div class="mt-3">
+                            {% for star in range(round(avg_rating)) %}
+                                <span class="text-warning">&#9733;</span>
+                            {% endfor %}
+                            {% for empty_star in range(5 - round(avg_rating)) %}
+                                <span class="text-muted">&#9733;</span>
+                            {% endfor %}
+                        </div>
+                        {% if userid and result and course.id in result %}
+                            <a href="{{ url_for('course', course_id=course.id) }}" class="btn btn-primary mt-3">Перейти до курсу</a>
+                        {% endif %}
+                        <button class="btn btn-primary mt-3 toggle-comments" onclick="toggleComments(this)">Побачити коментарі</button>
+                        
+                        <div class="comments mt-3" style="display: none;">
+                            {% for review in course.reviews %}
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h6 class="card-subtitle mb-2 text-muted">Рейтинг: {{ review.rating }}</h6>
+                                        <p class="card-text">{{ review.comment }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <form action="{{ url_for('add_review', course_id=course.id) }}" method="POST">
+                                <div class="form-group">
+                                    <label for="rating">Рейтинг:</label>
+                                    <input type="number" class="form-control" id="rating" name="rating" min="1" max="5" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="comment">Коментар:</label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Додати коментар</button>
+                            </form>
+                        </div>
+
+                        <a href="{{ url_for('payment', course_id=course.id) }}" class="btn btn-primary mt-3">Оплатити курс</a>
+                        
+                        {% if admin %}
+                            <form action="{{ url_for('delete_course', course_id=course.id) }}" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-danger mt-3">Видалити курс</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function toggleDetails(btn) {
+            var details = btn.parentNode.querySelector('.course-details');
+            var toggleText = btn.textContent === "Дізнатись більше" ? "Не дізнатись більше" : "Дізнатись більше";
+            
+            if (details.style.display === "none") {
+                details.style.display = "block";
+            } else {
+                details.style.display = "none";
+            }
+            
+            btn.textContent = toggleText;
+        }
+        
+        function toggleComments(btn) {
+            var comments = btn.parentNode.querySelector('.comments');
+            var toggleText = btn.textContent === "Побачити коментарі" ? "Не побачити коментарі" : "Побачити коментарі";
+            
+            if (comments.style.display === "none") {
+                comments.style.display = "block";
+            } else {
+                comments.style.display = "none";
+            }
+            
+            btn.textContent = toggleText;
+        }
+    </script>
+    
+    <footer>
+        <div class="container">
+            <p>Тут може бути ваша реклама</p>
+        </div>
+    </footer>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="container mt-3">
+                <div class="alert alert-success" role="alert">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
